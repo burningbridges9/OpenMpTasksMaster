@@ -130,7 +130,20 @@ void TaskEleven()
 	cout << " max =" << max << endl;
 }
 
-
+void TaskThirteen()
+{
+	const int n = 30;
+	int a[n] = { 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1 };
+	int p = 2;
+	int sum = 0;
+#pragma omp parallel for ordered
+	for (int i = 0; i < n; i++)
+	{
+		sum += a[i] * pow(p, (n-1)-i);
+		//printf("%i * (%i ^ %i)\n", a[i], p, n - 1 - i);
+	}
+	printf("number = %i\n", sum); // 756893125
+}
 
 void TaskFourteen()
 {
@@ -179,9 +192,9 @@ int main()
 	//TaskTen();
 
 	//TaskEleven();
-
+	TaskThirteen();
 	//TaskFourteen();
-	TaskFifteen();
+	//TaskFifteen();
 	system("pause");
 }
 
