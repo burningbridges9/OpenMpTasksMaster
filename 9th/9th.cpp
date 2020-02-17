@@ -6,6 +6,7 @@
 #include <iostream>
 #include <ctime>
 #include "9th.h"
+#include "windows.h"
 using namespace std;
 
 
@@ -139,7 +140,7 @@ void TaskThirteen()
 #pragma omp parallel for ordered
 	for (int i = 0; i < n; i++)
 	{
-		sum += a[i] * pow(p, (n-1)-i);
+		sum += a[i] * pow(p, (n - 1) - i);
 		//printf("%i * (%i ^ %i)\n", a[i], p, n - 1 - i);
 	}
 	printf("number = %i\n", sum); // 756893125
@@ -171,7 +172,7 @@ void TaskFifteen()
 	printf("Enter numbers:\n");
 	int a = 2; int b = 20;
 	/*cin >> a >> b;*/
-	printf("U entered numbers: %i and %i\n", a,b);
+	printf("U entered numbers: %i and %i\n", a, b);
 	int dif = abs(b - a);
 	int defaultThreadsNum = 8;
 	int threadsNum = dif > defaultThreadsNum ? dif / defaultThreadsNum : defaultThreadsNum - defaultThreadsNum % dif;
@@ -185,6 +186,72 @@ void TaskFifteen()
 	}
 }
 
+void TaskTwelveOne()
+{
+#pragma omp parallel
+	{
+		int nthreads = omp_get_num_threads();
+		for (int i = nthreads - 1; i >= 0; i--)
+		{
+#pragma omp barrier
+			{
+				if (i == omp_get_thread_num())
+				{
+#pragma omp critical
+					cout << "thread " << i << endl;
+				}
+			}
+		}
+	}
+}
+
+void TaskTwelveTwo()
+{
+#pragma omp parallel
+	{
+		int nthreads = omp_get_num_threads();
+#pragma omp for ordered
+		for (int i = nthreads - 1; i >= 0; i--)
+		{
+#pragma omp ordered
+			{
+				//#pragma omp critical
+				cout << "thread " << i << endl;
+			}
+		}
+	}
+}
+
+void TaskTwelveThree()
+{
+#pragma omp parallel
+	{
+		int nthreads = omp_get_num_threads();
+		int threadNumber = omp_get_thread_num();
+		int dif = nthreads - threadNumber;
+		int chillTime = dif * 100;
+		switch (dif)
+		{
+		case 1:
+			Sleep(chillTime);
+			cout << "thread " << threadNumber << endl;
+			break;
+		case 2:
+			Sleep(chillTime);
+			cout << "thread " << threadNumber << endl;
+			break;
+		case 3:
+			Sleep(chillTime);
+			cout << "thread " << threadNumber << endl;
+			break;
+		case 4:
+			Sleep(chillTime);
+			cout << "thread " << threadNumber << endl;
+			break;
+		}
+	}
+}
+
 int main()
 {
 	//TaskNine();
@@ -192,8 +259,15 @@ int main()
 	//TaskTen();
 
 	//TaskEleven();
-	TaskThirteen();
+
+	//TaskTwelveOne();
+	//TaskTwelveTwo();
+	//TaskTwelveThree();
+	TaskTwelveFour();
+	//TaskThirteen();
+
 	//TaskFourteen();
+
 	//TaskFifteen();
 	system("pause");
 }
